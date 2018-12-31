@@ -12,8 +12,12 @@ from aws_plugin.hooks.aws_kms_hook import AwsKmsHook
 from aws_plugin.operators.emr_create_job_flow_selective_template_operator \
     import EmrCreateJobFlowSelectiveTemplateOperator
 
+from aws_plugin.sensors.emr_cluster_sensors import EmrClusterStartSensor, EmrClusterEndSensor
+
 
 class AwsPlugin(AirflowPlugin):
     name = "aws_plugin"
     operators = [EmrCreateJobFlowSelectiveTemplateOperator]
     hooks = [AwsSecretsManagerHook, AwsAthenaHook, AwsKmsHook]
+    sensors = [EmrClusterStartSensor,
+               EmrClusterEndSensor]
