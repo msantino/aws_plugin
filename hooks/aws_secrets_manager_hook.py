@@ -4,6 +4,7 @@ Connect to a AWS Secrets Manager to retrieve a stored key
 """
 # pylint: disable=import-error,missing-docstring
 from airflow.contrib.hooks.aws_hook import AwsHook
+from airflow.exceptions import AirflowException
 from botocore.exceptions import ClientError
 
 
@@ -43,6 +44,7 @@ class AwsSecretsManagerHook(AwsHook):
                 print("The request was invalid due to:", err)
             elif err.response['Error']['Code'] == 'InvalidParameterException':
                 print("The request had invalid params:", err)
+            raise AirflowException('Error: {}'.format(str(err)))
         else:
             # Decrypted secret using the associated KMS CMK
             # Depending on whether the secret was a string or binary,
